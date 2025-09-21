@@ -23,8 +23,10 @@ export default function VerifyRequest() {
   const [otp, setOtp] = useState("");
   const [emailPending, startTransition] = useTransition();
   const params = useSearchParams();
-  const email = params.get("email") as string;
-  const isOtpCompleted = otp.length === 6;
+  const emailParam = params.get("email");
+  const email = typeof emailParam === "string" ? emailParam.trim() : "";
+  const isEmailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  const isOtpCompleted = /^\d{6}$/.test(otp);
 
   function verifyOtp() {
     startTransition(async () => {
@@ -34,7 +36,7 @@ export default function VerifyRequest() {
         fetchOptions: {
           onSuccess: () => {
             toast.success("Email Verified");
-            router.push("/");
+    router.push("/");
           },
           onError: () => {
             toast.error("Error Verifying Email/OTP");
@@ -81,7 +83,7 @@ export default function VerifyRequest() {
         </div>
         <Button
           onClick={verifyOtp}
-          disabled={emailPending || !isOtpCompleted}
+          disabled={emailPending || !isOtpCompleted || !isEmailValid}
           className="w-full"
         >
           {emailPending ? (

@@ -27,7 +27,17 @@ export const auth = betterAuth({
             from: "Strivio <onboarding@resend.dev>",
             to: [email],
             subject: "Strivio Verification Email",
-            html: `<p>Your OTP is: <strong>${otp}</strong></p>`,
+            html: `
+            <div style="font-family: system-ui, -apple-system, sans-serif; max-width: 600px; margin: 0 auto;">
+              <h2>Your Strivio Verification Code</h2>
+              <p>Enter this code to complete your sign-in:</p>
+              <div style="background: #f3f4f6; padding: 20px; text-align: center; border-radius: 8px; margin: 20px 0;">
+                <span style="font-size: 32px; font-weight: bold; letter-spacing: 8px;">${otp}</span>
+              </div>
+              <p style="color: #6b7280; font-size: 14px;">This code expires in 10 minutes.</p>
+              <p style="color: #6b7280; font-size: 14px;">If you didn't request this code, you can safely ignore this email.</p>
+            </div>
+          `,
           });
 
           if (error) {

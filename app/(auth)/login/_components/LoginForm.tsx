@@ -41,6 +41,10 @@ export function LoginForm() {
   }
 
   function signInWithEmail() {
+    if (!email || !email.includes("@")) {
+      toast.error("Please enter a valid email address");
+      return;
+    }
     startEmailTransition(async () => {
       await authClient.emailOtp.sendVerificationOtp({
         email: email,
@@ -48,7 +52,7 @@ export function LoginForm() {
         fetchOptions: {
           onSuccess: () => {
             toast.success("Email Sent");
-            router.push(`/verify-request?email=${email}`);
+            router.push(`/verify-request?email=${encodeURIComponent(email)}`);
           },
           onError: () => {
             toast.error("Error sending Email");
@@ -107,7 +111,7 @@ export function LoginForm() {
           </div>
           <Button
             onClick={signInWithEmail}
-            disabled={emailPending}
+            disabled={emailPending || !email}
             className="w-full"
           >
             {emailPending ? (
