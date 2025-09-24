@@ -1,9 +1,9 @@
 import {
   BookOpen,
-  ChevronDownIcon,
-  HomeIcon,
-  LayoutDashboardIcon,
-  LogOutIcon,
+  ChevronDown,
+  Home,
+  LayoutDashboard,
+  LogOut,
 } from "lucide-react";
 
 interface iAppProps {
@@ -30,6 +30,11 @@ import { useRouter } from "next/navigation";
 
 export function UserDropdown({ email, name, image }: iAppProps) {
   const router = useRouter();
+  const fallbackInitial = (
+    name?.charAt(0) ||
+    email?.charAt(0) ||
+    "?"
+  ).toUpperCase();
   async function signOut() {
     await authClient.signOut({
       fetchOptions: {
@@ -49,13 +54,9 @@ export function UserDropdown({ email, name, image }: iAppProps) {
         <Button variant="ghost" className="h-auto p-0 hover:bg-transparent">
           <Avatar>
             <AvatarImage src={image} alt="Profile image" />
-            <AvatarFallback>{name[0].toUpperCase()}</AvatarFallback>
+            <AvatarFallback>{fallbackInitial}</AvatarFallback>
           </Avatar>
-          <ChevronDownIcon
-            size={16}
-            className="opacity-60"
-            aria-hidden="true"
-          />
+          <ChevronDown size={16} className="opacity-60" aria-hidden="true" />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="max-w-64 mt-4">
@@ -71,19 +72,19 @@ export function UserDropdown({ email, name, image }: iAppProps) {
         <DropdownMenuGroup>
           <DropdownMenuItem asChild>
             <Link href="/">
-              <HomeIcon size={16} className="opacity-60" aria-hidden="true" />
+              <Home size={16} className="opacity-60" aria-hidden="true" />
               <span>Home</span>
             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem asChild>
-            <Link href="/">
+            <Link href="/courses">
               <BookOpen size={16} className="opacity-60" aria-hidden="true" />
               <span>Courses</span>
             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem asChild>
-            <Link href="/">
-              <LayoutDashboardIcon
+            <Link href="/dashboard">
+              <LayoutDashboard
                 size={16}
                 className="opacity-60"
                 aria-hidden="true"
@@ -94,7 +95,7 @@ export function UserDropdown({ email, name, image }: iAppProps) {
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuItem onClick={signOut}>
-          <LogOutIcon size={16} className="opacity-60" aria-hidden="true" />
+          <LogOut size={16} className="opacity-60" aria-hidden="true" />
           <span>Logout</span>
         </DropdownMenuItem>
       </DropdownMenuContent>

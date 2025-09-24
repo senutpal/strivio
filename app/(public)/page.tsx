@@ -59,6 +59,9 @@ export default function Home() {
           router.push("/");
           toast.success("Signed out successfully!");
         },
+        onError: () => {
+          toast.error("Failed to Sign Out");
+        },
       },
     });
   }
