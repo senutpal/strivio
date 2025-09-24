@@ -13,7 +13,7 @@ import {
   MessageSquare,
   LucideIcon,
 } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardAction, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 
 interface FeatureProps {
   title: string;
@@ -23,7 +23,7 @@ interface FeatureProps {
 
 const features: FeatureProps[] = [
   {
-    title: "Comprehensive Courses",
+    title: "Curated Courses",
     description:
       "Access a wide range of carefully curated courses designed by industry experts to help you stay ahead.",
     icon: BookOpen,
@@ -68,7 +68,7 @@ export default function Home() {
 
   return (
     <>
-      <section className="relative py-20">
+      <section className="relative py-15">
         <div className="flex flex-col items-center text-center space-y-8">
           <Badge variant="outline">The Future of Online Education</Badge>
           <h1 className="text-4xl md:text-6xl font-bold tracking-tight">
@@ -112,17 +112,22 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 ">
+      <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 px-4 lg:px-6 mb-10">
         {features.map((feature, index) => (
-          <Card key={index} className="hover:shadow-lg transition-shadow">
+          <Card
+            key={index}
+            className="@container/card hover:shadow-lg transition-shadow bg-gradient-to-t from-primary/5 to-card dark:bg-card shadow-xs"
+          >
             <CardHeader>
-              <div className="mb-4">
+              <div className="mb-4 text-3xl">
                 <feature.icon />
               </div>
-              <CardTitle>{feature.title}</CardTitle>
+              <CardTitle className="text-xl font-semibold">
+                {feature.title}
+              </CardTitle>
             </CardHeader>
-            <CardContent>
-              <p className="text-muted-foreground">{feature.description}</p>
+            <CardContent className="text-sm text-muted-foreground">
+              {feature.description}
             </CardContent>
           </Card>
         ))}

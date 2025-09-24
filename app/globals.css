@@ -43,9 +43,6 @@
   --radius-xl: calc(var(--radius) + 4px);
 }
 
-
-
-
 :root {
   --font-sans: "DM Sans", sans-serif;
   --radius: 0.625rem;
