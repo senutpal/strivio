@@ -1,9 +1,6 @@
 "use client";
 
-import {
-  IconDotsVertical,
-  IconLogout,
-} from "@tabler/icons-react";
+import { IconDotsVertical, IconLogout } from "@tabler/icons-react";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
@@ -30,11 +27,11 @@ export function NavUser() {
   const { data: session, isPending } = authClient.useSession();
   const { isMobile } = useSidebar();
 
+  const handleSignOut = useSignOut();
+  
   if (isPending) {
     return null;
   }
-
-  const handleSignOut = useSignOut();
 
   return (
     <SidebarMenu>

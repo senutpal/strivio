@@ -8,17 +8,21 @@ export function useSignOut() {
   const router = useRouter();
 
   const handleSignOut = async function signOut() {
-    await authClient.signOut({
-      fetchOptions: {
-        onSuccess: () => {
-          router.push("/");
-          toast.success("Signed out successfully!");
+    try {
+      await authClient.signOut({
+        fetchOptions: {
+          onSuccess: () => {
+            router.replace("/");
+            toast.success("Signed out successfully!");
+          },
+          onError: () => {
+            toast.error("Failed to Sign Out");
+          },
         },
-        onError: () => {
-          toast.error("Failed to Sign Out");
-        },
-      },
-    });
+      });
+    } catch {
+      toast.error("Failed to Sign Out");
+    }
   };
 
   return handleSignOut;

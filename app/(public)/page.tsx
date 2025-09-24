@@ -68,7 +68,7 @@ export default function Home() {
 
   return (
     <>
-      <section className="relative py-15">
+      <section className="relative py-16">
         <div className="flex flex-col items-center text-center space-y-8">
           <Badge variant="outline">The Future of Online Education</Badge>
           <h1 className="text-4xl md:text-6xl font-bold tracking-tight">
