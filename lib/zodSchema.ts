@@ -1,19 +1,19 @@
 import { z } from "zod";
 
 export const CourseLevels = ["Beginner", "Intermediate", "Advanced"] as const;
-export const CourseStatus = ["Draft", "Published", "Archieved"] as const;
+export const CourseStatus = ["Draft", "Published", "Archived"] as const;
 
 export const courseCategories = [
   "Development",
-  "Buisness",
+  "Business",
   "Finance",
   "It & Software",
   "Office Productivity",
   "Design",
-  "health & FItness",
+  "Health & Fitness",
   "Marketing",
   "Music",
-  "Persoanl Development",
+  "Personal Development",
 ] as const;
 
 export const courseSchema = z.object({
@@ -50,7 +50,7 @@ export const courseSchema = z.object({
     .min(3, { message: "Slug must be at least 3 characters long" }),
 
   status: z.enum(CourseStatus, {
-    message: "Status must be one of: Draft, Published, or Archieved",
+    message: "Status must be one of: Draft, Published, or Archived",
   }),
 });
 

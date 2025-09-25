@@ -9,13 +9,10 @@ export default function CoursesPage() {
         <Link className={buttonVariants({})} href="/admin/courses/create">
           Create Courses
         </Link>
-          </div>
-          <div>
-              <h1>
-                  Here You aill see all fo the courses 
-              </h1>
-          </div>
-          
+      </div>
+      <div>
+        <h1>Here You will see all of the courses</h1>
+      </div>
     </>
   );
 }

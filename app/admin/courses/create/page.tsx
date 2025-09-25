@@ -244,8 +244,16 @@ export default function CourseCreationPage() {
                         <Input
                           placeholder="Duration"
                           type="number"
-                          max={50}
+                          min={1}
+                          max={500}
                           {...field}
+                          value={field.value ?? ""}
+                          onChange={(event) => {
+                            const { value } = event.target;
+                            field.onChange(
+                              value === "" ? undefined : Number(value)
+                            );
+                          }}
                         />
                       </FormControl>
                       <FormMessage />
@@ -265,6 +273,13 @@ export default function CourseCreationPage() {
                           type="number"
                           max={50}
                           {...field}
+                          value={field.value ?? ""}
+                          onChange={(event) => {
+                            const { value } = event.target;
+                            field.onChange(
+                              value === "" ? undefined : Number(value)
+                            );
+                          }}
                         />
                       </FormControl>
                       <FormMessage />

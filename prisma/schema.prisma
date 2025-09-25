@@ -108,5 +108,5 @@ enum CourseLevel {
 enum CourseStatus {
   Draft
   Published
-  Archieved
+  Archived
 }
