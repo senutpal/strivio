@@ -1,4 +1,5 @@
 "use client";
+
 import { Button, buttonVariants } from "@/components/ui/button";
 import {
   Card,
@@ -38,6 +39,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import Editor from "@/components/rich-text-editor/Editor";
 
 export default function CourseCreationPage() {
   const form = useForm<CourseSchemaType>({
@@ -153,11 +155,12 @@ export default function CourseCreationPage() {
                   <FormItem className="w-full">
                     <FormLabel>Description</FormLabel>
                     <FormControl>
-                      <Textarea
+                      {/* <Textarea
                         placeholder=" Description"
                         {...field}
                         className="min-h-[120px]"
-                      />
+                      /> */}
+                      <Editor field={field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
