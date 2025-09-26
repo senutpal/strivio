@@ -22,10 +22,19 @@ const Editor = ({ field }: { field: any }) => {
     },
 
     onUpdate: ({ editor }) => {
-      field.onchange(JSON.stringify(editor.getJSON()));
+      field.onChange(JSON.stringify(editor.getJSON()));
     },
 
-    content: field.value ? JSON.parse(field.value) : "<p>Hello World</p>",
+    content: (() => {
+      if (!field.value) {
+        return "<p>Hello World</p>";
+      }
+      try {
+        return JSON.parse(field.value);
+      } catch {
+        return field.value;
+      }
+    })(),
   });
 
   return (

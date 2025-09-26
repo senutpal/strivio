@@ -41,10 +41,7 @@ export function Menubar({ editor }: iAppProps) {
                 size="sm"
                 pressed={editor.isActive("bold")}
                 onPressedChange={() => {
-                  console.log(editor.isActive("bold"));
                   editor.chain().focus().toggleBold().run();
-
-                  console.log(editor.isActive("bold"));
                 }}
                 className={cn(
                   editor.isActive("bold") && "text-muted-foreground bg-muted"
