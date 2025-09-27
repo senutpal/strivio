@@ -1,3 +1,4 @@
+import "server-only";
 export const runtime = "nodejs";
 
 import { betterAuth } from "better-auth";

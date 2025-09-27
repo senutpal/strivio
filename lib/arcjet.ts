@@ -1,4 +1,6 @@
+import "server-only";
 import arcjet, {
+
   fixedWindow,
   detectBot,
   protectSignup,
