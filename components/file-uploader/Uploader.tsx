@@ -108,7 +108,9 @@ export function Uploader() {
         ...prev,
         progress: 0,
         error: true,
+        uploading: false,
       }));
+      
     }
   }
 
