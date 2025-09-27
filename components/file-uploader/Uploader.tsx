@@ -4,7 +4,12 @@ import React, { useCallback, useState } from "react";
 import { FileRejection, useDropzone } from "react-dropzone";
 import { Card, CardContent } from "../ui/card";
 import { cn } from "@/lib/utils";
-import { RenderEmptyState } from "./RenderState";
+import {
+  RenderEmptyState,
+  RenderErrorState,
+  RenderUploadedState,
+  RenderUploadingState,
+} from "./RenderState";
 import { toast } from "sonner";
 import { v4 as uuidv4 } from "uuid";
 
@@ -21,7 +26,7 @@ interface UploaderState {
 }
 
 export function Uploader() {
-  const [files, setFiles] = useState<UploaderState>({
+  const [fileState, setFileState] = useState<UploaderState>({
     id: null,
     error: false,
     file: null,
@@ -32,7 +37,7 @@ export function Uploader() {
   });
 
   async function uploadFile(file: File) {
-    setFiles((prev) => ({
+    setFileState((prev) => ({
       ...prev,
       uploading: true,
       progress: 0,
@@ -44,7 +49,7 @@ export function Uploader() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           filename: file.name,
-          contenType: file.type,
+          contentType: file.type,
           size: file.size,
           isImage: true,
         }),
@@ -52,7 +57,7 @@ export function Uploader() {
 
       if (!preSignedResponse.ok) {
         toast.error("Failed to get presigned URL ");
-        setFiles((prev) => ({
+        setFileState((prev) => ({
           ...prev,
           uploading: false,
           progress: 0,
@@ -63,27 +68,56 @@ export function Uploader() {
 
       const { preSignedUrl, key } = await preSignedResponse.json();
 
-      // await new Promise((resolve, reject) => {
-      //   const xhr = new XMLHttpRequest();
-      //   xhr.upload.onprogress = (event) => {
-      //     if (event.lengthComputable) {
-      //       const percentageCompleted = (event.loaded / event.total) * 100;
-      //       setFiles((prev) => ({
-      //         ...prev,
-      //         progress: Math.round(percentageCompleted),
-      //       }));
-      //     }
-      //   };
+      await new Promise<void>((resolve, reject) => {
+        const xhr = new XMLHttpRequest();
 
-        
-      // });
-    } catch (error) {}
+        xhr.upload.onprogress = (event) => {
+          if (event.lengthComputable) {
+            const percentageCompleted = (event.loaded / event.total) * 100;
+            setFileState((prev) => ({
+              ...prev,
+              progress: Math.round(percentageCompleted),
+            }));
+          }
+        };
+
+        xhr.onload = () => {
+          if (xhr.status === 200 || xhr.status === 204) {
+            setFileState((prev) => ({
+              ...prev,
+              progress: 100,
+              uploading: false,
+              key: key,
+            }));
+            toast.success("File uploaded successfully");
+            resolve();
+          } else {
+            reject(new Error("Upload failed"));
+          }
+        };
+
+        xhr.onerror = () => reject(new Error("Upload failed"));
+
+        xhr.open("PUT", preSignedUrl);
+        xhr.setRequestHeader("Content-Type", file.type);
+        xhr.send(file);
+      });
+    } catch {
+      toast.error("Something went wrong ");
+      setFileState((prev) => ({
+        ...prev,
+        progress: 0,
+        error: true,
+      }));
+    }
   }
 
   const onDrop = useCallback((acceptedFiles: File[]) => {
     if (acceptedFiles.length > 0) {
       const file = acceptedFiles[0];
-      setFiles({
+      const objectUrl = URL.createObjectURL(file);
+
+      setFileState({
         id: uuidv4(),
         error: false,
         file: file,
@@ -91,35 +125,50 @@ export function Uploader() {
         progress: 0,
         isDeleting: false,
         fileType: "image",
-        objectUrl: URL.createObjectURL(file),
+        objectUrl,
       });
+      uploadFile(file);
     }
   }, []);
 
   function rejectedFiles(fileRejection: FileRejection[]) {
     if (fileRejection.length) {
-      const tooManyFiles = fileRejection.find((rejection) => {
-        rejection.errors[0].code === "too-many-files";
-      });
+      const tooManyFiles = fileRejection.some((rejection) =>
+        rejection.errors.some((error) => error.code === "too-many-files")
+      );
 
-      const fileSizeTooBig = fileRejection.find((rejection) => {
-        rejection.errors[0].code === " file-too-large";
-      });
+      const fileSizeTooBig = fileRejection.some((rejection) =>
+        rejection.errors.some((error) => error.code === "file-too-large")
+      );
 
-      if (fileSizeTooBig) {
-        toast.error("File size exceeds the maximum limit");
-      }
-      if (tooManyFiles) {
-        toast.error("Too many files selected, max is 1 ");
-      }
+      if (fileSizeTooBig) toast.error("File size exceeds the maximum limit");
+      if (tooManyFiles) toast.error("Too many files selected, max is 1");
     }
+  }
+
+  function renderContent() {
+    if (fileState.uploading) {
+      return (
+        <RenderUploadingState
+          file={fileState.file as File}
+          progress={fileState.progress}
+        />
+      );
+    }
+    if (fileState.error) {
+      return <RenderErrorState />;
+    }
+
+    if (fileState.objectUrl) {
+      return <RenderUploadedState previewUrl={fileState.objectUrl} />;
+    }
+
+    return <RenderEmptyState isDragActive={isDragActive} />;
   }
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
-    accept: {
-      "image/*": [],
-    },
+    accept: { "image/*": [] },
     maxFiles: 1,
     multiple: false,
     maxSize: 5 * 1024 * 1024,
@@ -138,7 +187,7 @@ export function Uploader() {
     >
       <CardContent className="flex items-center justify-center h-full w-full p-4 text-muted-foreground">
         <input {...getInputProps()} />
-        <RenderEmptyState isDragActive={isDragActive} />
+        {renderContent()}
       </CardContent>
     </Card>
   );

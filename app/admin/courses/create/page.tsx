@@ -169,7 +169,7 @@ export default function CourseCreationPage() {
                   <FormItem className="w-full">
                     <FormLabel>Thumbnail Image</FormLabel>
                     <FormControl>
-                      <Uploader />
+                      <Uploader  />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
