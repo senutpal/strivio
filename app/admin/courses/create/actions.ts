@@ -12,6 +12,12 @@ export async function createCourse(
   const session = await auth.api.getSession({
     headers: await headers(),
   });
+  if (!session?.user?.id) {
+    return {
+      status: "error",
+      message: "Unauthorized",
+    };
+  }
   try {
     const validation = courseSchema.safeParse(values);
     if (!validation.success) {
@@ -24,7 +30,7 @@ export async function createCourse(
     const data = await prisma.course.create({
       data: {
         ...validation.data,
-        userId: session?.user.id as string,
+        userId: session?.user.id,
       },
     });
 
