@@ -5,17 +5,13 @@ import { NextResponse } from "next/server";
 
 export async function DELETE(request: Request) {
   try {
-    const body = await request.json();
-    const key = body.key;
+    const body = await request.json().catch(() => null);
+    const key = body?.key as string | undefined;
 
     if (!key) {
       return NextResponse.json(
-        {
-          error: "Missing or invalid object key",
-        },
-        {
-          status: 400,
-        }
+        { error: "Missing or invalid object key" },
+        { status: 400 }
       );
     }
 
@@ -24,14 +20,16 @@ export async function DELETE(request: Request) {
       Key: key,
     });
     await S3.send(command);
+
     return NextResponse.json(
-      { message: "File deleted succesfully" },
+      { ok: true, message: "File deleted successfully" },
       { status: 200 }
     );
-  } catch {
+  } catch (err) {
+    console.error("S3 delete error", err);
     return NextResponse.json(
-      { message: "Missing or invalid object key" },
-      { status: 400 }
+      { error: "Failed to delete file" },
+      { status: 500 }
     );
   }
 }

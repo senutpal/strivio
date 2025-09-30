@@ -164,15 +164,10 @@ export function Uploader({ onChange, value }: iAppProps) {
 
       if (!response.ok) {
         toast.error("Failed to remove file from storage");
-
-        setFileState((prev) => ({
-          ...prev,
-          isDeleting: true,
-          error: true,
-        }));
-
+        setFileState((prev) => ({ ...prev, isDeleting: false, error: true }));
         return;
       }
+      
       if (fileState.objectUrl && !fileState.objectUrl.startsWith("http")) {
         URL.revokeObjectURL(fileState.objectUrl);
       }
@@ -188,6 +183,7 @@ export function Uploader({ onChange, value }: iAppProps) {
         fileType: "image",
         id: null,
         isDeleting: false,
+        key: undefined,
       }));
 
       toast.success("File removed successfully");
