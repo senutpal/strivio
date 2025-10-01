@@ -1,4 +1,4 @@
-import "server-only";
+// import "server-only";
 export const runtime = "nodejs";
 
 import { betterAuth } from "better-auth";
@@ -7,6 +7,7 @@ import { prismaAdapter } from "better-auth/adapters/prisma";
 import { prisma } from "./db";
 import { env } from "./env";
 import { resend } from "./resend";
+import { admin } from "better-auth/plugins";
 
 export const auth = betterAuth({
   secret: env.BETTER_AUTH_SECRET,
@@ -51,5 +52,7 @@ export const auth = betterAuth({
         }
       },
     }),
+
+    admin(),
   ],
 });
