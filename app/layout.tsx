@@ -21,10 +21,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning className={dmSans.variable}>
-      <body
-        className="antialiased"
-        style={{ fontFamily: "var(--font-sans)" }}
-      >
+      <body className="antialiased" style={{ fontFamily: "var(--font-sans)" }}>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
@@ -32,7 +29,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           {children}
-          <Toaster/>
+          <Toaster closeButton />
         </ThemeProvider>
       </body>
     </html>

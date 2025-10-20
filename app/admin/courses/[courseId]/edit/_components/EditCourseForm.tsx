@@ -272,7 +272,7 @@ export function EditCourseForm({ data }: iAppProps) {
                   <Input
                     placeholder="Price"
                     type="number"
-                    max={50}
+                    max={500}
                     {...field}
                     value={field.value ?? ""}
                     onChange={(event) => {
