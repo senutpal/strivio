@@ -25,7 +25,10 @@ export const courseSchema = z.object({
 
   fileKey: z.string().min(1, { message: "File key is required" }),
 
-  price: z.number().min(1, { message: "Price must be at least 1" }),
+  price: z
+    .number()
+    .min(1, { message: "Price must be at least 1" })
+    .max(500, { message: "Price cannot exceed $500" }),
 
   duration: z
     .number()

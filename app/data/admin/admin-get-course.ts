@@ -21,7 +21,7 @@ export async function adminGetCourse(id: string) {
       slug: true,
       smallDescription: true,
       category: true,
-      chapter: {
+      chapters: {
         select: {
           id: true,
           title: true,
@@ -33,7 +33,7 @@ export async function adminGetCourse(id: string) {
               description: true,
               thumbnailKey: true,
               position: true,
-              videoKey:true
+              videoKey:true,
             },
           },
         },
