@@ -79,10 +79,23 @@ export async function reorderLessons(
 ): Promise<ApiResponse> {
   await requireAdmin();
   try {
-    if (!lessons || lessons.length < 0) {
+    if (!lessons || lessons.length === 0) {
       return {
         status: "error",
         message: "No lessons provided for reordering",
+      };
+    }
+
+    const lessonIds = lessons.map((l) => l.id);
+    const existingLessons = await prisma.lesson.findMany({
+      where: { id: { in: lessonIds }, chapterId },
+      select: { id: true },
+    });
+
+    if (existingLessons.length !== lessons.length) {
+      return {
+        status: "error",
+        message: "Invalid lesson IDs provided",
       };
     }
 
@@ -100,7 +113,7 @@ export async function reorderLessons(
 
     await prisma.$transaction(updates);
 
-    revalidatePath(`/admin/couses/${courseId}/edit`);
+    revalidatePath(`/admin/courses/${courseId}/edit`);
 
     return {
       message: "Lessons Reordered Sucessfully ",
@@ -120,12 +133,26 @@ export async function reorderChapters(
 ): Promise<ApiResponse> {
   await requireAdmin();
   try {
-    if (!chapters || chapters.length < 0) {
+    if (!chapters || chapters.length === 0) {
       return {
         status: "error",
-        message: "No chapters provied for recording ",
+        message: "No chapters provided for reordering",
       };
     }
+
+    const chapterIds = chapters.map((c) => c.id);
+    const existingChapters = await prisma.chapter.findMany({
+      where: { id: { in: chapterIds }, courseId },
+      select: { id: true },
+    });
+
+    if (existingChapters.length !== chapters.length) {
+      return {
+        status: "error",
+        message: "Invalid chapter IDs provided",
+      };
+    }
+
     const updates = chapters.map((chapter) =>
       prisma.chapter.update({
         where: {
@@ -140,10 +167,10 @@ export async function reorderChapters(
 
     await prisma.$transaction(updates);
 
-    revalidatePath(`/admin/couses/${courseId}/edit`);
+    revalidatePath(`/admin/courses/${courseId}/edit`);
 
     return {
-      message: "Chapters Reordered Sucessfully ",
+      message: "Chapters Reordered Successfully ",
       status: "success",
     };
   } catch {

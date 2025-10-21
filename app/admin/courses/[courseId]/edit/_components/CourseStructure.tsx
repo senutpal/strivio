@@ -131,7 +131,7 @@ export function CourseStructure({ data }: iAppProps) {
       let targetChapterId = null;
 
       if (overType === "chapter") {
-        targetChapterId === overId;
+        targetChapterId = overId;
       } else if (overType === "lesson") {
         targetChapterId = over.data.current?.chapterId ?? null;
       }
