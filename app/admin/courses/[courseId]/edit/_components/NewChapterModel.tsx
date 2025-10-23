@@ -36,7 +36,7 @@ export function NewChapterModel({ courseId }: { courseId: string }) {
       courseId: courseId,
     },
   });
-  
+
   async function onSubmit(values: ChapterSchemaType) {
     startTransition(async () => {
       const { data: result, error } = await tryCatch(createChapter(values));
@@ -57,6 +57,9 @@ export function NewChapterModel({ courseId }: { courseId: string }) {
   }
 
   function handleOpenChange(open: boolean) {
+    if (!open) {
+      form.reset();
+    }
     setIsOpen(open);
   }
 
