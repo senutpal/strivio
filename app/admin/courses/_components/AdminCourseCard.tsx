@@ -17,8 +17,6 @@ import {
   Pencil,
   School,
   Timer,
-  TimerIcon,
-  Trash,
   Trash2,
 } from "lucide-react";
 import Image from "next/image";
@@ -31,7 +29,7 @@ interface iAppProps {
 export function AdminCourseCard({ data }: iAppProps) {
   const thumbnailUrl = useConstructUrl(data.fileKey);
   return (
-    <Card className="group relative py-0 gap-0 ">
+    <Card className="group relative py-0 gap-0  ">
       <div className="absolute top-2 right-2 z-10">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
