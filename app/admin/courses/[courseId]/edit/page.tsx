@@ -21,7 +21,7 @@ export default async function EditRoute({ params }: { params: Params }) {
         Edit Course : <span className="text-primary"> {data.title}</span>
       </h1>
 
-      <Tabs defaultValue="basic-info" className="w-full">
+      <Tabs defaultValue="basic-info" className="w-full space-y-2">
         <TabsList className=" grid grid-cols-2 w-full">
           <TabsTrigger value="basic-info">Basic Info</TabsTrigger>
           <TabsTrigger value="course-structure">Course Structure </TabsTrigger>
