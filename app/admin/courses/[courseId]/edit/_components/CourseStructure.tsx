@@ -309,7 +309,7 @@ export function CourseStructure({ data }: iAppProps) {
                         toggleChapter(item.id);
                       }}
                     >
-                      <div className="flex items-cente justify-between px-3 pb-3 border-b border-border">
+                      <div className="flex items-center justify-between p-3 border-b border-border">
                         <div className="flex items-center gap-2">
                           <Button
                             size="icon"

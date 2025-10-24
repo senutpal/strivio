@@ -237,7 +237,7 @@ export async function createChapter(
   }
 }
 export async function createLesson(
-  values: ChapterSchemaType
+  values: LessonSchemaType
 ): Promise<ApiResponse> {
   await requireAdmin();
   try {

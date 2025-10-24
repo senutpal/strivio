@@ -6,10 +6,10 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
+  AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { tryCatch } from "@/hooks/try-catch";
-import { AlertDialogTrigger } from "@radix-ui/react-alert-dialog";
 import { Trash2 } from "lucide-react";
 import { useState, useTransition } from "react";
 import { deleteChapter } from "../actions";

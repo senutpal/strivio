@@ -34,7 +34,7 @@ export function DeleteLesson({
         deleteLesson({ chapterId, courseId, lessonId })
       );
       if (error) {
-        toast.error("An unexpected error occured.Please try again.");
+        toast.error("An unexpected error occurred.Please try again.");
         return;
       }
 

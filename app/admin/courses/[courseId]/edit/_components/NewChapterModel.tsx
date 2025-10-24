@@ -42,7 +42,7 @@ export function NewChapterModel({ courseId }: { courseId: string }) {
       const { data: result, error } = await tryCatch(createChapter(values));
 
       if (error) {
-        toast.error("An unexpected error occured.Please try again.");
+        toast.error("An unexpected error occurred.Please try again.");
         return;
       }
 
