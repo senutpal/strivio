@@ -8,6 +8,7 @@ import {
   DropdownMenu,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Skeleton } from "@/components/ui/skeleton";
 import { useConstructUrl } from "@/hooks/use-contruct";
 
 import {
@@ -124,3 +125,30 @@ export function AdminCourseCard({ data }: iAppProps) {
     </Card>
   );
 }
+
+export function AdminCourseCardSkeleton() {
+  return (
+    <Card className="relative py-0 gap-0">
+      <div className="absolute top-2 right-2 z-10">
+        <Skeleton className="h-8 w-8 rounded-md" />
+      </div>
+
+      <Skeleton className="w-full aspect-video rounded-t-lg" />
+
+      <CardContent className="p-4 space-y-3">
+        <Skeleton className="h-6 w-3/4" />
+
+        <Skeleton className="h-4 w-full" />
+        <Skeleton className="h-4 w-5/6" />
+
+        <div className="mt-4 flex items-center gap-x-5">
+          <Skeleton className="h-6 w-16 rounded-md" />
+          <Skeleton className="h-6 w-20 rounded-md" />
+        </div>
+
+        <Skeleton className="h-10 w-full mt-4 rounded-lg" />
+      </CardContent>
+    </Card>
+  );
+}
+
