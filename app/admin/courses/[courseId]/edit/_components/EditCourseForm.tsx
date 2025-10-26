@@ -8,7 +8,7 @@ import {
   CourseSchemaType,
   CourseStatus,
 } from "@/lib/zodSchema";
-import {  Loader2, Plus, Sparkle } from "lucide-react";
+import { Loader2, Plus, Sparkle } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -164,7 +164,11 @@ export function EditCourseForm({ data }: iAppProps) {
             <FormItem className="w-full">
               <FormLabel>Thumbnail Image</FormLabel>
               <FormControl>
-                <Uploader onChange={field.onChange} value={field.value} />
+                <Uploader
+                  onChange={field.onChange}
+                  value={field.value}
+                  fileTypeAccepted="image"
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
