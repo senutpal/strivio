@@ -32,7 +32,7 @@ export async function updateLesson(
 
     return {
       status: 'success',
-      message:"Course Updated Successfulyy"
+      message:"Lesson Updated Successfully"
     }
   } catch {
     return {

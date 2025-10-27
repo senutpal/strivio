@@ -145,7 +145,7 @@ export function Uploader({ onChange, value, fileTypeAccepted }: iAppProps) {
           progress: 0,
           isDeleting: false,
           fileType: fileTypeAccepted,
-          objectUrl: URL.createObjectURL(file),
+          objectUrl: objectUrl,
         });
         uploadFile(file);
       }

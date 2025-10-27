@@ -1,9 +1,9 @@
 "use client";
-
+import { useCallback } from "react";
 import confetti from "canvas-confetti";
 
 export const useConfetti = () => {
-  const triggerConfetti = () => {
+  const triggerConfetti = useCallback(() => {
     const count = 200;
     const defaults = {
       origin: { y: 0.7 },
@@ -39,7 +39,7 @@ export const useConfetti = () => {
       spread: 120,
       startVelocity: 45,
     });
-  };
+  }, []);
 
   return { triggerConfetti };
 };

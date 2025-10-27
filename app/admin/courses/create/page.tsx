@@ -19,7 +19,6 @@ import { ArrowLeft, Loader2, Plus, Sparkle } from "lucide-react";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import z from "zod";
 import {
   Form,
   FormControl,

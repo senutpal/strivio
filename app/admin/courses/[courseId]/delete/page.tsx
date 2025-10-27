@@ -25,7 +25,7 @@ export default function DeleteCourseRoute() {
       const { data: result, error } = await tryCatch(deleteCourse(courseId));
 
       if (error) {
-        toast.error("Unexpected Error Occured");
+        toast.error("Unexpected Error Occurred");
         return;
       }
 

@@ -30,8 +30,7 @@ async function RenderCourses() {
     <>
       {data.length === 0 ? (
         <EmptyState
-          title="
-    No Courses Found"
+          title="No Courses Found"
           description="Create a new course to get started"
           buttonText="Create Course"
           href="/admin/courses/create"

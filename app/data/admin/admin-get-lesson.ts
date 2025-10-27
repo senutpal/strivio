@@ -2,7 +2,7 @@ import { prisma } from "@/lib/db";
 import { requireAdmin } from "./require-admin";
 import { notFound } from "next/navigation";
 
-export async function adminGetLeson(id: string) {
+export async function adminGetLesson(id: string) {
   await requireAdmin();
   const data = await prisma.lesson.findUnique({
     where: {
@@ -25,4 +25,4 @@ export async function adminGetLeson(id: string) {
   return data;
 }
 
-export type AdminLessonType = Awaited<ReturnType<typeof adminGetLeson>>;
+export type AdminLessonType = Awaited<ReturnType<typeof adminGetLesson>>;

@@ -19,12 +19,12 @@ export async function deleteCourse(courseId: string): Promise<ApiResponse> {
 
     return {
       status: "success",
-      message: "Course deleted sucessfully",
+      message: "Course deleted successfully",
     };
   } catch {
     return {
       status: "error",
-      message: "Failed to delte course",
+      message: "Failed to delete course",
     };
   }
 }

@@ -6,7 +6,6 @@ import { prisma } from "@/lib/db";
 import { ApiResponse } from "@/lib/types";
 import { courseSchema, CourseSchemaType } from "@/lib/zodSchema";
 import { request } from "@arcjet/next";
-import { NextResponse } from "next/server";
 
 const aj = arcjet
   .withRule(
@@ -46,7 +45,7 @@ export async function createCourse(
       };
     }
 
-    const data = await prisma.course.create({
+    await prisma.course.create({
       data: {
         ...validation.data,
         userId: session?.user.id,
@@ -57,7 +56,7 @@ export async function createCourse(
       status: "success",
       message: "Courses created sucessfully ",
     };
-  } catch (error) {
+  } catch {
     return {
       status: "error",
       message: "Failed to create course",

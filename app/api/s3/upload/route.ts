@@ -7,8 +7,6 @@ import z from "zod";
 import { v4 as uuidv4 } from "uuid";
 import { S3 } from "@/lib/S3Client";
 import arcjet, { detectBot, fixedWindow } from "@/lib/arcjet";
-import { auth } from "@/lib/auth";
-import { headers } from "next/headers";
 import { requireAdmin } from "@/app/data/admin/require-admin";
 
 export const fileUploadSchema = z.object({
