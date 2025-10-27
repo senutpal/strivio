@@ -36,7 +36,7 @@ export default function VerifyRequest() {
         fetchOptions: {
           onSuccess: () => {
             toast.success("Email Verified");
-    router.push("/");
+            router.push("/");
           },
           onError: () => {
             toast.error("Error Verifying Email/OTP");
@@ -99,3 +99,4 @@ export default function VerifyRequest() {
     </Card>
   );
 }
+

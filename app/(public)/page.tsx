@@ -13,7 +13,8 @@ import {
   MessageSquare,
   LucideIcon,
 } from "lucide-react";
-import { Card, CardAction, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { GlowingEffect } from "@/components/ui/glowing-effect";
 
 interface FeatureProps {
   title: string;
@@ -114,22 +115,31 @@ export default function Home() {
 
       <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 px-4 lg:px-6 mb-10">
         {features.map((feature, index) => (
-          <Card
-            key={index}
-            className="@container/card hover:shadow-lg transition-shadow bg-gradient-to-t from-primary/5 to-card dark:bg-card shadow-xs"
-          >
-            <CardHeader>
-              <div className="mb-4 text-3xl">
-                <feature.icon />
-              </div>
-              <CardTitle className="text-xl font-semibold">
-                {feature.title}
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="text-sm text-muted-foreground">
-              {feature.description}
-            </CardContent>
-          </Card>
+          <div key={index} className="relative h-full min-h-[14rem]">
+            <div className="relative h-full rounded-[1.25rem] border-[0.75px] border-border p-2 md:rounded-[1.5rem] md:p-3">
+              <GlowingEffect
+                spread={40}
+                glow={true}
+                disabled={false}
+                proximity={64}
+                inactiveZone={0.01}
+                borderWidth={3}
+              />
+              <Card className="relative h-full border-[0.75px] bg-background shadow-sm dark:shadow-[0px_0px_27px_0px_rgba(45,45,45,0.3)] bg-gradient-to-t from-primary/5 to-card">
+                <CardHeader>
+                  <div className="mb-4 w-fit rounded-lg border-[0.75px] border-border bg-muted p-2">
+                    <feature.icon className="h-4 w-4" />
+                  </div>
+                  <CardTitle className="text-xl font-semibold">
+                    {feature.title}
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="text-sm text-muted-foreground">
+                  {feature.description}
+                </CardContent>
+              </Card>
+            </div>
+          </div>
         ))}
       </section>
     </>

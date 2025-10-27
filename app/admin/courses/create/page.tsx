@@ -19,7 +19,6 @@ import { ArrowLeft, Loader2, Plus, Sparkle } from "lucide-react";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import z from "zod";
 import {
   Form,
   FormControl,
@@ -45,11 +44,12 @@ import { useTransition } from "react";
 import { createCourse } from "./actions";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { useConfetti } from "@/hooks/use-confetti";
 
 export default function CourseCreationPage() {
   const [pending, startTransition] = useTransition();
   const router = useRouter();
-
+  const { triggerConfetti } = useConfetti();
   const form = useForm<CourseSchemaType>({
     resolver: zodResolver(courseSchema),
     defaultValues: {
@@ -77,6 +77,7 @@ export default function CourseCreationPage() {
 
       if (result.status === "success") {
         toast.success(result.message);
+        triggerConfetti();
         form.reset();
         router.push("/admin/courses");
       } else if (result.status === "error") {
@@ -189,7 +190,11 @@ export default function CourseCreationPage() {
                   <FormItem className="w-full">
                     <FormLabel>Thumbnail Image</FormLabel>
                     <FormControl>
-                      <Uploader onChange={field.onChange} value={field.value} />
+                      <Uploader
+                        onChange={field.onChange}
+                        value={field.value}
+                        fileTypeAccepted="image"
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

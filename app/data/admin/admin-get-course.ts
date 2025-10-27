@@ -4,6 +4,10 @@ import { prisma } from "@/lib/db";
 import { notFound } from "next/navigation";
 
 export async function adminGetCourse(id: string) {
+  await new Promise((resolve) => {
+    setTimeout(resolve, 5000);
+  });
+
   await requireAdmin();
   const data = await prisma.course.findUnique({
     where: {
@@ -33,7 +37,7 @@ export async function adminGetCourse(id: string) {
               description: true,
               thumbnailKey: true,
               position: true,
-              videoKey:true,
+              videoKey: true,
             },
           },
         },

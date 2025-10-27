@@ -9,7 +9,6 @@ import {
   type SlidingWindowRateLimitOptions,
   detectBot,
   protectSignup,
-  shield,
   slidingWindow,
 } from "@arcjet/next";
 import { NextRequest } from "next/server";
