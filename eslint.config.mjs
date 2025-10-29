@@ -19,6 +19,7 @@ const eslintConfig = [
       "build/**",
       "lib/generated/**",
       "next-env.d.ts",
+      "./components/ui/splash-cursor.tsx",
     ],
   },
 ];

@@ -6,7 +6,6 @@ import { NextRequest, NextResponse } from "next/server";
 import z from "zod";
 import { v4 as uuidv4 } from "uuid";
 import { S3 } from "@/lib/S3Client";
-import arcjet, { detectBot, fixedWindow } from "@/lib/arcjet";
 import { requireAdmin } from "@/app/data/admin/require-admin";
 
 export const fileUploadSchema = z.object({
@@ -16,38 +15,9 @@ export const fileUploadSchema = z.object({
   isImage: z.boolean(),
 });
 
-const aj = arcjet
-  .withRule(
-    detectBot({
-      mode: "LIVE",
-      allow: [],
-    })
-  )
-  .withRule(
-    fixedWindow({
-      mode: "LIVE",
-      window: "1m",
-      max: 5,
-    })
-  );
-
 export async function POST(req: NextRequest) {
-  const session = await requireAdmin();
+  await requireAdmin();
   try {
-    const decision = await aj.protect(req, {
-      fingerprint: session?.user.id as string,
-    });
-
-    if (decision.isDenied()) {
-      return NextResponse.json(
-        {
-          error: "Try again after some time ",
-        },
-        {
-          status: 429,
-        }
-      );
-    }
     const body = await req.json();
     const validation = fileUploadSchema.safeParse(body);
 
