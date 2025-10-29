@@ -4,7 +4,6 @@ import { useRouter } from "next/navigation";
 import { buttonVariants } from "@/components/ui/button";
 import { authClient } from "@/lib/auth-client";
 import { toast } from "sonner";
-import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
 import {
   BookOpen,
@@ -15,6 +14,8 @@ import {
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { GlowingEffect } from "@/components/ui/glowing-effect";
+import { AnimatedBadge } from "@/components/ui/animated-badge";
+import SplashCursor from "@/components/ui/splash-cursor";
 
 interface FeatureProps {
   title: string;
@@ -71,7 +72,10 @@ export default function Home() {
     <>
       <section className="relative py-16">
         <div className="flex flex-col items-center text-center space-y-8">
-          <Badge variant="outline">The Future of Online Education</Badge>
+          <AnimatedBadge
+            text="The Future of Online Education"
+            color="#ff6900"
+          />
           <h1 className="text-4xl md:text-6xl font-bold tracking-tight">
             Elevate Your Learning Experience
           </h1>
@@ -142,6 +146,7 @@ export default function Home() {
           </div>
         ))}
       </section>
+      <SplashCursor />
     </>
   );
 }
