@@ -4,7 +4,7 @@ import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useConstructUrl } from "@/hooks/use-contruct";
-import { School, Timer, TimerIcon } from "lucide-react";
+import { School, Timer } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 

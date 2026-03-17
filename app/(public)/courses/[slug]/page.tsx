@@ -7,7 +7,7 @@ import {
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
 import { Separator } from "@/components/ui/separator";
-import { useConstructUrl } from "@/hooks/use-contruct";
+import { env } from "@/lib/env";
 import {
   IconBook,
   IconCategory,
@@ -30,7 +30,9 @@ type Params = Promise<{ slug: string }>;
 export default async function SlugPage({ params }: { params: Params }) {
   const { slug } = await params;
   const course = await getIndividualCourse(slug);
-  const thumbnailUrl = useConstructUrl(course.fileKey);
+  const thumbnailUrl = course.fileKey
+    ? `https://${env.NEXT_PUBLIC_S3_BUCKET_NAME}.t3.storage.dev/${course.fileKey}`
+    : "";
 
   const session = await auth.api.getSession({
     headers: await headers(),
