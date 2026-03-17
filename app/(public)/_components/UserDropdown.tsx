@@ -1,9 +1,11 @@
 import {
   BookOpen,
   ChevronDown,
+  Heart,
   Home,
   LayoutDashboard,
   LogOut,
+  Settings,
 } from "lucide-react";
 
 interface iAppProps {
@@ -90,6 +92,18 @@ export function UserDropdown({ email, name, image }: iAppProps) {
                 aria-hidden="true"
               />
               <span>Dashboard</span>
+            </Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem asChild>
+            <Link href="/dashboard/wishlist">
+              <Heart size={16} className="opacity-60" aria-hidden="true" />
+              <span>Wishlist</span>
+            </Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem asChild>
+            <Link href="/settings">
+              <Settings size={16} className="opacity-60" aria-hidden="true" />
+              <span>Settings</span>
             </Link>
           </DropdownMenuItem>
         </DropdownMenuGroup>
