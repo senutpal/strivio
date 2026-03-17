@@ -1,36 +1,79 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# strivio
 
-## Getting Started
+online course platform built with next.js, prisma, and stripe.
 
-First, run the development server:
+## stack
+
+- next.js 15 (app router)
+- prisma + postgresql (neon)
+- better-auth (github oauth + email otp)
+- stripe (payments + webhooks)
+- aws s3 (file storage)
+- shadcn/ui + tailwind css
+- arcjet (rate limiting + bot detection)
+- resend (transactional emails)
+
+## setup
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
+pnpm install
+cp .env.example .env  # fill in your keys
+npx prisma migrate dev
 pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## env vars
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+| variable | description |
+|---|---|
+| `DATABASE_URL` | postgresql connection string |
+| `BETTER_AUTH_SECRET` | auth secret (min 20 chars) |
+| `BETTER_AUTH_URL` | base url (e.g. http://localhost:3000) |
+| `GITHUB_CLIENT_ID` | github oauth app client id |
+| `GITHUB_CLIENT_SECRET` | github oauth app secret |
+| `RESEND_API_KEY` | resend api key for emails |
+| `ARCJET_KEY` | arcjet security key |
+| `AWS_ACCESS_KEY_ID` | s3 access key |
+| `AWS_SECRET_ACCESS_KEY` | s3 secret key |
+| `AWS_ENDPOINT_URL_S3` | s3 endpoint |
+| `AWS_ENDPOINT_URL_IAM` | iam endpoint |
+| `AWS_REGION` | aws region |
+| `STRIPE_SECRET_KEY` | stripe secret key |
+| `STRIPE_WEBHOOK_SECRET` | stripe webhook signing secret |
+| `NEXT_PUBLIC_S3_BUCKET_NAME` | s3 bucket name |
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## features
 
-## Learn More
+- course browsing with search and filtering (category, level)
+- course detail pages with reviews and ratings
+- stripe checkout with dynamic pricing
+- webhook-driven enrollment activation
+- course player with video playback and lesson navigation
+- progress tracking (mark lessons complete, percentage bar)
+- student dashboard with enrolled courses and progress
+- certificate of completion (100% required)
+- wishlist / favorites
+- user settings (profile editing)
+- admin dashboard with real analytics (revenue, users, enrollments)
+- admin course management (create, edit, delete, reorder chapters/lessons)
+- drag-and-drop course structure editor
+- rich text editor for descriptions
+- s3 file uploads (thumbnails, videos)
+- email notifications (enrollment confirmation, otp verification)
+- github oauth + email otp authentication
+- role-based access control (admin/student)
+- rate limiting and bot detection
 
-To learn more about Next.js, take a look at the following resources:
+## project structure
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```
+app/
+  (auth)/          auth pages (login, verify)
+  (public)/        public pages (home, courses, dashboard, settings)
+  admin/           admin pages (dashboard, course management)
+  api/             api routes (auth, s3, stripe webhook)
+  data/            server-side data fetchers
+components/        shared ui components
+lib/               config, db, auth, stripe, s3, utils
+prisma/            schema and migrations
+```
