@@ -1,6 +1,5 @@
 import { getIndividualCourse } from "@/app/data/course/get-course";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import {
   Collapsible,
@@ -15,9 +14,16 @@ import {
   IconChartBar,
   IconClock,
   IconPlayerPlay,
+  IconStarFilled,
 } from "@tabler/icons-react";
 import { CheckIcon, ChevronDown } from "lucide-react";
 import Image from "next/image";
+import { auth } from "@/lib/auth";
+import { headers } from "next/headers";
+import { prisma } from "@/lib/db";
+import { EnrollButton } from "./_components/EnrollButton";
+import { WishlistButton } from "./_components/WishlistButton";
+import { ReviewSection } from "./_components/ReviewSection";
 
 type Params = Promise<{ slug: string }>;
 
@@ -25,6 +31,61 @@ export default async function SlugPage({ params }: { params: Params }) {
   const { slug } = await params;
   const course = await getIndividualCourse(slug);
   const thumbnailUrl = useConstructUrl(course.fileKey);
+
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+
+  let isEnrolled = false;
+  let isInWishlist = false;
+  let userReview = null;
+
+  if (session?.user) {
+    const [enrollment, wishlist, review] = await Promise.all([
+      prisma.enrollment.findUnique({
+        where: {
+          userId_courseId: { userId: session.user.id, courseId: course.id },
+        },
+        select: { status: true },
+      }),
+      prisma.wishlist.findUnique({
+        where: {
+          userId_courseId: { userId: session.user.id, courseId: course.id },
+        },
+        select: { id: true },
+      }),
+      prisma.review.findUnique({
+        where: {
+          userId_courseId: { userId: session.user.id, courseId: course.id },
+        },
+        select: { id: true, rating: true, comment: true, createdAt: true, user: { select: { name: true, image: true } } },
+      }),
+    ]);
+    isEnrolled = enrollment?.status === "Active";
+    isInWishlist = !!wishlist;
+    userReview = review;
+  }
+
+  const reviews = await prisma.review.findMany({
+    where: { courseId: course.id },
+    orderBy: { createdAt: "desc" },
+    select: {
+      id: true,
+      rating: true,
+      comment: true,
+      createdAt: true,
+      user: { select: { name: true, image: true } },
+    },
+  });
+
+  const ratingResult = await prisma.review.aggregate({
+    where: { courseId: course.id },
+    _avg: { rating: true },
+    _count: { rating: true },
+  });
+
+  const averageRating = ratingResult._avg.rating ?? 0;
+  const reviewCount = ratingResult._count.rating;
 
   return (
     <div className="grid grid-cols-1 gap-8 lg:grid-cols-3 mt-5">
@@ -50,7 +111,7 @@ export default async function SlugPage({ params }: { params: Params }) {
           </div>
           <div className="flex flex-wrap gap-3">
             <Badge className="flex items-center gap-1 px-3 py-1">
-              <IconChartBar className="size-4" />#<span>{course.level}</span>
+              <IconChartBar className="size-4" /><span>{course.level}</span>
             </Badge>
             <Badge className="flex items-center gap-1 px-3 py-1">
               <IconCategory className="size-4" />
@@ -58,8 +119,14 @@ export default async function SlugPage({ params }: { params: Params }) {
             </Badge>
             <Badge className="flex items-center gap-1 px-3 py-1">
               <IconClock className="size-4" />
-              <span>{course.duration}</span>
+              <span>{course.duration}h</span>
             </Badge>
+            {reviewCount > 0 && (
+              <Badge variant="outline" className="flex items-center gap-1 px-3 py-1">
+                <IconStarFilled className="size-3 text-yellow-500" />
+                <span>{averageRating.toFixed(1)} ({reviewCount})</span>
+              </Badge>
+            )}
           </div>
           <Separator className="my-8" />
           <div className="space-y-6">
@@ -146,6 +213,17 @@ export default async function SlugPage({ params }: { params: Params }) {
               ))}
             </div>
           </div>
+
+          <Separator className="my-8" />
+
+          <ReviewSection
+            courseId={course.id}
+            reviews={reviews}
+            averageRating={averageRating}
+            reviewCount={reviewCount}
+            isEnrolled={isEnrolled}
+            userReview={userReview}
+          />
         </div>
       </div>
       <div className="order-2 lg:col-span-1">
@@ -228,7 +306,7 @@ export default async function SlugPage({ params }: { params: Params }) {
                     <div className="rounded-full bg-green-500/10 p-1">
                       <CheckIcon className="size-3" />
                     </div>
-                    <span>Access on Mobile & Dekstop</span>
+                    <span>Access on Mobile & Desktop</span>
                   </li>
                   <li className="flex items-center gap-2 text-sm">
                     <div className="rounded-full bg-green-500/10 p-1">
@@ -238,7 +316,18 @@ export default async function SlugPage({ params }: { params: Params }) {
                   </li>
                 </ul>
               </div>
-              <Button>Enroll Now!</Button>
+              <div className="space-y-3">
+                <EnrollButton
+                  courseId={course.id}
+                  isEnrolled={isEnrolled}
+                  slug={slug}
+                />
+                <WishlistButton
+                  courseId={course.id}
+                  isInWishlist={isInWishlist}
+                  isLoggedIn={!!session?.user}
+                />
+              </div>
               <p className="mt-3 text-center text-xs text-muted-foreground">
                 30-Day Moneyback Guarantee!
               </p>
