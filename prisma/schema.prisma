@@ -20,6 +20,12 @@ model User {
   sessions      Session[]
   accounts      Account[]
   courses       Course[]
+  enrollment    Enrollment[]
+  lessonProgress LessonProgress[]
+  reviews       Review[]
+  wishlist      Wishlist[]
+
+  stripeCustomerId String? @unique
 
   role       String?
   banned     Boolean?  @default(false)
@@ -105,7 +111,10 @@ model Course {
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String
 
-  chapters Chapter[]
+  chapters   Chapter[]
+  enrollment Enrollment[]
+  reviews    Review[]
+  wishlist   Wishlist[]
 }
 
 enum CourseLevel {
@@ -152,6 +161,83 @@ model Lesson {
   chapter Chapter @relation(fields: [chapterId],references: [id],onDelete: Cascade)
   chapterId String
 
+  progress LessonProgress[]
+
   @@unique([chapterId,position])
   @@index([chapterId])
+}
+
+model Enrollment {
+  id String @id @default(uuid())
+
+  amount Int
+  status EnrollmentStatus @default(Pending)
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  Course Course @relation(fields: [courseId],references: [id], onDelete: Cascade)
+  courseId String
+
+  User User @relation(fields: [userId],references: [id], onDelete: Cascade)
+  userId String
+
+  @@unique([userId,courseId])
+}
+
+enum EnrollmentStatus {
+  Pending
+  Active
+  Successful
+}
+
+model LessonProgress {
+  id        String   @id @default(uuid())
+  completed Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  lesson   Lesson @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  lessonId String
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+
+  @@unique([userId, lessonId])
+  @@index([userId])
+  @@index([lessonId])
+}
+
+model Review {
+  id      String @id @default(uuid())
+  rating  Int
+  comment String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  course   Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  courseId  String
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+
+  @@unique([userId, courseId])
+  @@index([courseId])
+  @@index([userId])
+}
+
+model Wishlist {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+
+  course   Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  courseId  String
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+
+  @@unique([userId, courseId])
+  @@index([userId])
+  @@index([courseId])
 }
